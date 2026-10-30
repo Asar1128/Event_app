@@ -40,7 +40,12 @@ pipeline {
               minikube image load event-backend:${TAG}
               sed "s|IMAGE_TAG|${TAG}|g" k8s/backend.yaml | kubectl apply -f -
               kubectl -n ${NS} rollout status deployment/backend --timeout=180s
-              curl -fsS http://$(minikube ip)/api/health
+              for i in $(seq 1 30); do
+                curl -fsS http://$(minikube ip)/api/health && break
+                echo "waiting for backend ($i)"
+                sleep 5
+                [ "$i" = 30 ] && exit 1
+              done
             '''
           }
           post {
@@ -58,7 +63,12 @@ pipeline {
               minikube image load event-frontend:${TAG}
               sed "s|IMAGE_TAG|${TAG}|g" k8s/frontend.yaml | kubectl apply -f -
               kubectl -n ${NS} rollout status deployment/frontend --timeout=180s
-              curl -fsS -o /dev/null http://$(minikube ip)/login
+              for i in $(seq 1 30); do
+                curl -fsS -o /dev/null http://$(minikube ip)/login && break
+                echo "waiting for frontend ($i)"
+                sleep 5
+                [ "$i" = 30 ] && exit 1
+              done
             '''
           }
           post {
