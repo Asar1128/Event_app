@@ -32,19 +32,30 @@ export default function Events() {
   }
 
   return (
-    <main style={{ maxWidth: 640, margin: '60px auto', fontFamily: 'sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Upcoming Events</h1>
-        <button onClick={logout}>Logout</button>
-      </div>
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
-      {events.map((ev) => (
-        <div key={ev.id} style={{ border: '1px solid #ddd', borderRadius: 8, padding: 16, marginBottom: 12 }}>
-          <h3 style={{ margin: 0 }}>{ev.title}</h3>
-          <p style={{ margin: '4px 0', color: '#555' }}>{ev.date} · {ev.location}</p>
-          <p style={{ margin: 0 }}>{ev.description}</p>
+    <main className="events-page">
+      <nav className="topbar">
+        <div className="brand"><span className="brand-mark">E</span><span>Evently</span></div>
+        <div className="topbar-actions"><span className="user-avatar">✦</span><button onClick={logout} className="logout-button">Log out</button></div>
+      </nav>
+      <section className="events-content">
+        <div className="events-heading">
+          <div><div className="eyebrow">Curated for you</div><h1>Upcoming events</h1><p>Make plans for something worth remembering.</p></div>
+          <div className="event-count">{events.length || 0}<span>events</span></div>
         </div>
-      ))}
+        <div className="event-grid">
+          {events.map((ev) => (
+            <article key={ev.id} className="event-card">
+              <div className="event-card-top"><span className="event-date">{new Date(ev.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span><span className="event-arrow">↗</span></div>
+              <div className="event-icon">✦</div>
+              <h3>{ev.title}</h3>
+              <p className="event-meta">◷ {ev.date} <span>·</span> {ev.location}</p>
+              <p className="event-description">{ev.description}</p>
+              <button className="event-link">View details <span>→</span></button>
+            </article>
+          ))}
+        </div>
+        {error && <p className="form-error">{error}</p>}
+      </section>
     </main>
   );
 }

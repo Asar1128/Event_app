@@ -28,21 +28,37 @@ export default function AuthForm({ mode }) {
   }
 
   return (
-    <main style={{ maxWidth: 360, margin: '80px auto', fontFamily: 'sans-serif' }}>
-      <h1>{isLogin ? 'Login' : 'Register'}</h1>
-      <form onSubmit={submit} style={{ display: 'grid', gap: 12 }}>
-        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password (min 6 chars)" value={password} onChange={(e) => setPassword(e.target.value)} required />
-        <button type="submit">{isLogin ? 'Login' : 'Create account'}</button>
-      </form>
-      {error && <p style={{ color: 'crimson' }}>{error}</p>}
-      <p>
-        {isLogin ? (
-          <>No account? <Link href="/register">Register</Link></>
-        ) : (
-          <>Have an account? <Link href="/login">Login</Link></>
-        )}
-      </p>
+    <main className="auth-page">
+      <section className="auth-shell">
+        <div className="auth-brand">
+          <span className="brand-mark">E</span>
+          <span>Evently</span>
+        </div>
+        <div className="auth-card">
+          <div className="eyebrow">{isLogin ? 'Welcome back' : 'Join the community'}</div>
+          <h1>{isLogin ? 'Sign in to Evently' : 'Create your account'}</h1>
+          <p className="auth-subtitle">
+            {isLogin ? 'Discover experiences worth showing up for.' : 'Find your next memorable experience.'}
+          </p>
+          <form onSubmit={submit} className="auth-form">
+            <label htmlFor="email">Email address</label>
+            <input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <label htmlFor="password">Password</label>
+            <input id="password" type="password" placeholder="At least 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <button type="submit" className="primary-button">{isLogin ? 'Sign in' : 'Create account'} <span>→</span></button>
+          </form>
+          {error && <p className="form-error">{error}</p>}
+          <p className="auth-switch">
+            {isLogin ? (
+              <>New to Evently? <Link href="/register">Create an account</Link></>
+            ) : (
+              <>Already have an account? <Link href="/login">Sign in</Link></>
+            )}
+          </p>
+        </div>
+      </section>
+      <div className="auth-decoration auth-decoration-one" />
+      <div className="auth-decoration auth-decoration-two" />
     </main>
   );
 }
